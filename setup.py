@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 __author__ = 'Jayme Tosi Neto'
 
 from distutils.core import setup
@@ -5,7 +7,8 @@ from setuptools import setup, find_packages
 
 setup(name = "py-clean-image-crop-uploader",
     version = "0.0.1",
-    description = "PyClean Image Crop Uploader (CICU) provides AJAX file upload and image CROP functionalities using pure python. It uses Modal from twitter-bootstrap. This is a fork of clean-image-crop-uploader.",
+    description = u"PyClean Image Crop Uploader (CICU) provides AJAX file upload and image CROP functionalities" 
+                  u"using Pyramid. It uses Modal from twitter-bootstrap. This is a fork of clean-image-crop-uploader.",
     long_description=open('README.rst').read(),
     author = "kalkehcoisa",
     author_email = "kalkehcoisa@gmail.com",
@@ -15,7 +18,9 @@ setup(name = "py-clean-image-crop-uploader",
     install_requires = [
         'Pillow>=1.5',
         'deform>=2.0a2',
-        'colander>=1.0b1'
+        'colander>=1.0b1',
+        'pyramid_chameleon>=0.1',
+        'SQLAlchemy==0.8.3',
         ],
     classifiers = [
         'Development Status :: 1 - Alpha',

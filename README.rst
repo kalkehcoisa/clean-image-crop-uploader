@@ -1,3 +1,5 @@
+#. TODO: Adjust this README to the new project. Right now it demands a lot of packages, in the future we intend to reduce them to a minimum.
+
 py-clean-image-crop-uploader (pyCICU)
 ================================
 .. image:: https://d2weczhvl823v0.cloudfront.net/asaglimbeni/django-datetime-widget/trend.png
@@ -12,8 +14,9 @@ py-clean-image-crop-uploader (pyCICU)
 (by `twitter bootstrap <http://twitter.github.com/bootstrap/javascript.html#modals>`_) the image can be uploaded and cropped.
 Second one, you can see the image cropping preview in the form and finally submit the result.
 
-``py-clean-image-crop-uploader`` is perfect when you have to upload images and it's necessary to have a specific portion of image. It's easy to configure and to use.
-You can use different configurations , with fixed aspect ratio or minimal image size.
+``py-clean-image-crop-uploader`` is perfect when you have to upload images and it's necessary to have a specific portion of image. 
+It'll be easy to configure and to use.
+You can use different configurations, with fixed aspect ratio or minimal image size.
 
 It works with jQuery = 1.8.3 and twitter bootstrap.
 
