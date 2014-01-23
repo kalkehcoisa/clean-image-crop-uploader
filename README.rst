@@ -4,10 +4,10 @@ py-clean-image-crop-uploader (pyCICU)
 ================================
 .. image:: https://d2weczhvl823v0.cloudfront.net/asaglimbeni/django-datetime-widget/trend.png
     :target: https://bitdeli.com/free
-.. image:: https://pypip.in/v/clean-image-crop-uploader/badge.png
-    :target: https://crate.io/packages/clean-image-crop-uploader
-.. image:: https://pypip.in/d/clean-image-crop-uploader/badge.png
-    :target: https://crate.io/packages/clean-image-crop-uploader
+.. image:: https://pypip.in/v/py-clean-image-crop-uploader/badge.png
+    :target: https://crate.io/packages/py-clean-image-crop-uploader
+.. image:: https://pypip.in/d/py-clean-image-crop-uploader/badge.png
+    :target: https://crate.io/packages/py-clean-image-crop-uploader
     
 ``py-clean-image-crop-uploader`` is a tool to upload an image via Ajax and crop it using `Jcrop
 <https://github.com/tapmodo/Jcrop>`_. It provides a simple workflow: first one, using modal,
