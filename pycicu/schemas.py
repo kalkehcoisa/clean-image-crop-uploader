@@ -5,7 +5,7 @@ import deform
 
 from .widget import deferred_croped_picture
 
-class receiveUpload(colander.Schema):#AnnoyingSchema):
+class receiveUpload(colander.Schema):
     
     #def __init__(self, *args, **kwargs):
     #    if 'request' in kwargs and kwargs['request'].method == 'POST':

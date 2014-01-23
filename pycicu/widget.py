@@ -20,6 +20,8 @@ from deform.compat import (
 from deform.i18n import _
 
 from pyramid_deform import SessionFileUploadTempStore
+from deform.interfaces import FileUploadTempStore 
+tmpstore = FileUploadTempStore()
 
 
 def pyCreateResourceRegistry(resourceRegistry=None):

@@ -47,6 +47,12 @@ Dependencies
 * jQuery = 1.8.3
 * Twitter-Bootstrap
 
+* Pillow >= 1.5
+* deform >= 2.0a2
+* colander >= 1.0b1
+* pyramid_chameleon >= 0.1
+* SQLAlchemy >= 0.8.3
+
 Configuration
 -------------
 #. Add into url.py ::

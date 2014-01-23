@@ -4,7 +4,6 @@ from PIL import Image
 from os import path, sep, makedirs
 from .models import UploadedFile
 from pycicu import IMAGE_CROPPED_UPLOAD_TO
-from . import settings
 from .schemas import receiveUpload
 from .widget import pyCreateResourceRegistry
 
@@ -16,6 +15,7 @@ import deform
 from StringIO import StringIO
 import json
 import os
+import uuid
 
 from .models import DBSession
 
@@ -50,46 +50,40 @@ class ImageViews(object):
         file_location = self.store_file(f, fname)
         return file_location
     
-    def process_files(self, uid, files):
-        code = str(uid)[:8]
-        files_locations = []
-        for filedict in files:
-            if 'fp' in filedict:
-                f = filedict['fp']
-                fname = self.safe_filename(code + filedict['filename'])
-                file_location = self.store_file(f, fname)
-                files_locations.append(file_location)
-        return files_locations
-    
-    def process_record(self, appstruct):
-        img = UploadedFile()
-        DBSession.merge(img)
-        DBSession.flush()
-        return img
-    
+    def merge_record_with_form(self, record, post):
+        for key,value in post:
+            if hasattr(record, key):
+                setattr(record, key, value)
+        return record
     
     @view_config(route_name='pycicu-upload', renderer='pycicu:templates/teste.pt')#, request_method='POST')
     def upload(self):
         schema = receiveUpload(request=self.request,)\
-                               .bind(request=self.request,)
+                               .bind(request=self.request,
+                                     upload=self.request)
         form = deform.Form(schema, resource_registry=pyCreateResourceRegistry())
         if self.request.method == 'POST':
-            form_items = self.request.POST.items()
-            try:
-                appstruct = form.validate(form_items)
-                img = self.process_record(appstruct)
-                
-            except deform.ValidationFailure, e:
-                return Response(body=str(form.error))
+            post = self.request.POST
             
-            # pick an image file you have in the working directory
-            # (or give full path name)
-            img = Image.open(uploaded_file.file.path, mode='r')
+            format = post.get('file').filename.rsplit('.', 1)[1]
+            # ``input_file`` contains the actual file data which needs to be stored somewhere.
+            input_file = post.get('file').file
+            filename = '%s.%s' % (uuid.uuid4(), format)
+            
+            path = self.store_file(input_file, filename)
+            
+
+            img = UploadedFile()
+            img.file = filename
+            DBSession.merge(img)
+            DBSession.flush()
+
+            img = Image.open(path, mode='r')
             # get the image's width and height in pixels
             width, height = img.size
             data = {
-                'path': uploaded_file.file.url,
-                'id' : uploaded_file.id,
+                'path': path,
+                'id' : img.uid,
                 'width' : width,
                 'height' : height,
             }

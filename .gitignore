@@ -1,0 +1,9 @@
+.idea
+*.pyc
+
+/*.project
+/*.pydevproject
+/*.settings/
+
+/py_clean_image_crop_uploader.egg-info/
+/dist/
