@@ -23,9 +23,10 @@ setup(name = "py-clean-image-crop-uploader",
         'SQLAlchemy==0.8.3',
         ],
     classifiers = [
-        'Development Status :: 1 - Alpha',
+        #https://pypi.python.org/pypi?%3Aaction=list_classifiers
+        'Development Status :: 2 - Pre-Alpha',
         'Environment :: Web Environment',
-        'Framework :: None',
+        'Framework :: Pyramid',
         'Intended Audience :: Developers',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
