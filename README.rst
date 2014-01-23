@@ -1,4 +1,4 @@
-clean-image-crop-uploader (CICU)
+py-clean-image-crop-uploader (pyCICU)
 ================================
 .. image:: https://d2weczhvl823v0.cloudfront.net/asaglimbeni/django-datetime-widget/trend.png
     :target: https://bitdeli.com/free
@@ -7,12 +7,12 @@ clean-image-crop-uploader (CICU)
 .. image:: https://pypip.in/d/clean-image-crop-uploader/badge.png
     :target: https://crate.io/packages/clean-image-crop-uploader
     
-``clean-image-crop-uploader`` is a django widget to upload an image via Ajax and crop it using `Jcrop
+``py-clean-image-crop-uploader`` is a tool to upload an image via Ajax and crop it using `Jcrop
 <https://github.com/tapmodo/Jcrop>`_. It provides a simple workflow: first one, using modal,
 (by `twitter bootstrap <http://twitter.github.com/bootstrap/javascript.html#modals>`_) the image can be uploaded and cropped.
 Second one, you can see the image cropping preview in the form and finally submit the result.
 
-``clean-image-crop-uploader`` is perfect when you use an ImageField on your model where is necessary to have a specific portion of image. It's easy to configure and to use.
+``py-clean-image-crop-uploader`` is perfect when you have to upload images and it's necessary to have a specific portion of image. It's easy to configure and to use.
 You can use different configurations , with fixed aspect ratio or minimal image size.
 
 It works with jQuery = 1.8.3 and twitter bootstrap.
@@ -34,16 +34,10 @@ Screenshot:
 Installation
 ------------
 
-#. Install django-image-cropping using pip. For example::
+#. Install using pip. For example::
 
-    pip install clean-image-crop-uploader
+    pip install py-clean-image-crop-uploader
 
-#. Add ``south`` and ``cicu`` to your INSTALLED_APPS.
-
-#. run migrate commando to your django project::
-
-
-    python manage.py migrate
 
 Dependencies
 ------------

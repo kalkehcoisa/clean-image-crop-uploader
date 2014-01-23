@@ -1,24 +1,26 @@
-__author__ = 'Alfredo Saglimbeni'
+__author__ = 'Jayme Tosi Neto'
 
 from distutils.core import setup
 from setuptools import setup, find_packages
 
-setup(name = "clean-image-crop-uploader",
-    version = "0.2.2",
-    description = "Clean Image Crop Uploader (CICU) provides AJAX file upload and image CROP functionalities for ImageFields with a simple widget replacement in the form. It use Modal from twitter-bootstrap.",
+setup(name = "py-clean-image-crop-uploader",
+    version = "0.0.1",
+    description = "PyClean Image Crop Uploader (CICU) provides AJAX file upload and image CROP functionalities using pure python. It uses Modal from twitter-bootstrap. This is a fork of clean-image-crop-uploader.",
     long_description=open('README.rst').read(),
-    author = "asagli",
-    author_email = "alfredo.saglimbeni@gmail.com",
+    author = "kalkehcoisa",
+    author_email = "kalkehcoisa@gmail.com",
     url = "",
     packages = find_packages(),
     include_package_data=True,
     install_requires = [
-        'PIL==1.1.7','django>=1.4.3','south>=0.7.6'
+        'Pillow>=1.5',
+        'deform>=2.0a2',
+        'colander>=1.0b1'
         ],
     classifiers = [
-        'Development Status :: 4 - Beta',
+        'Development Status :: 1 - Alpha',
         'Environment :: Web Environment',
-        'Framework :: Django',
+        'Framework :: None',
         'Intended Audience :: Developers',
         'Operating System :: OS Independent',
         'Programming Language :: Python',

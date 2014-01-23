@@ -10,7 +10,7 @@ def freeCropView(request):
         form = freeCrop(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
             new_event = form.save()
-            return HttpResponseRedirect('/cicu-freecrop/?id='+str(new_event.id))
+            return HttpResponseRedirect('/pycicu-freecrop/?id='+str(new_event.id))
 
     else:
         if request.GET.get('id',None):
@@ -29,7 +29,7 @@ def fixedRatioView(request):
         form = fixedRatioCrop(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
             new_event = form.save()
-            return HttpResponseRedirect('/cicu-fixedratio/?id='+str(new_event.id))
+            return HttpResponseRedirect('/pycicu-fixedratio/?id='+str(new_event.id))
 
     else:
         if request.GET.get('id',None):
@@ -48,7 +48,7 @@ def warningSizeView(request):
         form = warningSizeCrop(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
             new_event = form.save()
-            return HttpResponseRedirect('/cicu-warningsize/?id='+str(new_event.id))
+            return HttpResponseRedirect('/pycicu-warningsize/?id='+str(new_event.id))
 
     else:
         if request.GET.get('id',None):

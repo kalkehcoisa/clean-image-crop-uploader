@@ -10,7 +10,7 @@ urlpatterns = patterns('',
         'document_root': settings.MEDIA_ROOT}),
     (r'^static/(?P<path>.*)$', 'django.views.static.serve', {
         'document_root': settings.STATIC_ROOT}),
-    (r'^ajax-upload/', include('cicu.urls')),
+    (r'^ajax-upload/', include('pycicu.urls')),
     ("^", include("formexample.urls")),
 
     # Examples:
