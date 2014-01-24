@@ -50,8 +50,8 @@ class ImageViews(object):
             rel_path = self.IMAGES_URL+'/'+filename
     
             image = UploadedFile()
-            image.file = filename
-            DBSession.merge(image)
+            image.file = path
+            DBSession.add(image)
             DBSession.flush()
     
             img = Image.open(path, mode='r')
@@ -59,7 +59,7 @@ class ImageViews(object):
             width, height = img.size
             data = {
                 'path': rel_path,
-                'id' : image.uid,
+                'id' : str(image.uid),
                 'width' : width,
                 'height' : height,
             }
@@ -77,10 +77,10 @@ class ImageViews(object):
         if self.request.method == 'POST':
             post = self.request.POST
             
-            format = post.get('file').filename.rsplit('.', 1)[1]
+            formatt = post.get('file').filename.rsplit('.', 1)[1]
             # ``input_file`` contains the actual file data which needs to be stored somewhere.
             input_file = post.get('file').file
-            filename = '%s.%s' % (uuid.uuid4(), format)
+            filename = '%s.%s' % (uuid.uuid4(), formatt)
             
             path = self.store_file(input_file, filename)
             rel_path = self.IMAGES_URL+'/'+filename
@@ -126,17 +126,23 @@ class ImageViews(object):
             raise Exception( str(width)+' '+str(height) )
         
         
+        new_file = UploadedFile()
+        new_file.original_id = original_id
+        DBSession.add(new_file)
+        DBSession.flush()
+        
+        
         pathToFile = self.USERFILES
-        filename = original_file.file.split(sep)[-1]
+        formatt = original_file.file.rsplit('.')[-1]
+        filename = str(new_file.uid)+'.'+formatt
         if not path.exists(pathToFile):
             makedirs(pathToFile)
         pathToFile = path.join(pathToFile, filename)
         croppedImage.save(pathToFile)
-        
-        new_file = UploadedFile()
+
+
         new_file.file = pathToFile
-        new_file.original_id = original_id
-        DBSession.add(new_file)
+        DBSession.merge(new_file)
         DBSession.flush()
 
         data = {

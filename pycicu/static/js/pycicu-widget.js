@@ -199,6 +199,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     pyCicuWidget.prototype.uploadDone = function(data) {
     	console.log('batatas');
+    	console.log(data);
         // This handles errors as well because iframe transport does not
         // distinguish between 200 response and other errors
         this.$fileUploadLabel.removeClass('disabled');
