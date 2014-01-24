@@ -5,7 +5,7 @@ from .widget import (CropedPhotoUploaderInput, deferred_croped_picture,
 
 from sqlalchemy import engine_from_config
 
-from .models import (DBSession, Base )
+from .models import (DBSession, Base)
 
 def routes(config):
     config.add_static_view('static', 'pycicu:static', cache_max_age=0)
