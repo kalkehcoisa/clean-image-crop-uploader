@@ -4,17 +4,17 @@ py-clean-image-crop-uploader (pyCICU)
 ================================
 .. image:: https://d2weczhvl823v0.cloudfront.net/asaglimbeni/django-datetime-widget/trend.png
     :target: https://bitdeli.com/free
-.. image:: https://pypip.in/v/py-clean-image-crop-uploader/badge.png
-    :target: https://crate.io/packages/py-clean-image-crop-uploader
-.. image:: https://pypip.in/d/py-clean-image-crop-uploader/badge.png
-    :target: https://crate.io/packages/py-clean-image-crop-uploader
+.. image:: https://pypip.in/v/pycicu/badge.png
+    :target: https://crate.io/packages/pycicu
+.. image:: https://pypip.in/d/pycicu/badge.png
+    :target: https://crate.io/packages/pycicu
     
-``py-clean-image-crop-uploader`` is a tool to upload an image via Ajax and crop it using `Jcrop
+``pycicu`` is a tool to upload an image via Ajax and crop it using `Jcrop
 <https://github.com/tapmodo/Jcrop>`_. It provides a simple workflow: first one, using modal,
 (by `twitter bootstrap <http://twitter.github.com/bootstrap/javascript.html#modals>`_) the image can be uploaded and cropped.
 Second one, you can see the image cropping preview in the form and finally submit the result.
 
-``py-clean-image-crop-uploader`` is perfect when you have to upload images and it's necessary to have a specific portion of image. 
+``pycicu`` is perfect when you have to upload images and it's necessary to have a specific portion of image. 
 It'll be easy to configure and to use.
 You can use different configurations, with fixed aspect ratio or minimal image size.
 
@@ -39,7 +39,7 @@ Installation
 
 #. Install using pip. For example::
 
-    pip install py-clean-image-crop-uploader
+    pip install pycicu
 
 
 Dependencies
