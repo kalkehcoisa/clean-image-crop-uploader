@@ -6,7 +6,7 @@ from distutils.core import setup
 from setuptools import setup, find_packages
 
 setup(name = "pycicu",
-    version = "0.1.0",
+    version = "0.1.1",
     description = u"PyClean Image Crop Uploader (pycicu) provides AJAX file upload and image CROP functionalities" 
                   u"using Pyramid. It uses Modal from twitter-bootstrap. This is a fork of clean-image-crop-uploader.",
     long_description=open('README.rst').read(),
