@@ -2,7 +2,6 @@
 
 __author__ = 'Jayme Tosi Neto'
 
-from distutils.core import setup
 from setuptools import setup, find_packages
 
 setup(name = "pycicu",
@@ -32,4 +31,5 @@ setup(name = "pycicu",
         'Programming Language :: Python',
         'Topic :: Software Development :: Libraries :: Python Modules',
         ],
+    zip_safe = False,
 )
