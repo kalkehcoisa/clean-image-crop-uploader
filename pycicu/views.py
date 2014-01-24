@@ -2,10 +2,8 @@
 
 from PIL import Image
 from os import path, sep, makedirs
-from .models import UploadedFile
-from pycicu import IMAGE_CROPPED_UPLOAD_TO
-from .schemas import receiveUpload
-from .widget import pyCreateResourceRegistry
+from pycicu.schemas import receiveUpload
+from pycicu.widget import pyCreateResourceRegistry
 
 from pyramid.view import view_config
 from pyramid.renderers import render
@@ -17,23 +15,18 @@ import json
 import os
 import uuid
 
-from .models import DBSession
-
-
-from familias import USERFILES
+from pycicu.models import (DBSession, UploadedFile)
 
 class ImageViews(object):
     
     def __init__(self, request):
         self.request = request
-    
-    valid_chars = set([i for i in '-_.() abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'])
-
-    def safe_filename(self, fn):
-        return ''.join(c for c in fn if c in self.valid_chars)
+        settings = request.registry.settings
+        self.USERFILES = settings['pycicu.userfiles']
+        self.IMAGES_URL = settings['pycicu.images_url']
     
     def store_file(self, file_object, file_name):
-        f_location = os.path.join(USERFILES, file_name)
+        f_location = os.path.join(self.USERFILES, file_name)
         output_file = open(f_location, 'wb')
         file_object.seek(0)
         while True:
@@ -43,18 +36,37 @@ class ImageViews(object):
             output_file.write(data)
         output_file.close()
         return f_location
-        
-    def process_file(self, filedict):
-        f = filedict['fp']
-        fname = filedict['filename']
-        file_location = self.store_file(f, fname)
-        return file_location
     
-    def merge_record_with_form(self, record, post):
-        for key,value in post:
-            if hasattr(record, key):
-                setattr(record, key, value)
-        return record
+    '''@view_config(route_name='pycicu-upload', request_method='POST')
+    def upload(self):
+        try:
+            post = self.request.POST
+            formatt = post.get('file').filename.rsplit('.', 1)[1]
+            # ``input_file`` contains the actual file data which needs to be stored somewhere.
+            input_file = post.get('file').file
+            filename = '%s.%s' % (uuid.uuid4(), formatt)
+            
+            path = self.store_file(input_file, filename)
+            rel_path = self.IMAGES_URL+'/'+filename
+    
+            image = UploadedFile()
+            image.file = filename
+            DBSession.merge(image)
+            DBSession.flush()
+    
+            img = Image.open(path, mode='r')
+            # get the image's width and height in pixels
+            width, height = img.size
+            data = {
+                'path': rel_path,
+                'id' : image.uid,
+                'width' : width,
+                'height' : height,
+            }
+            return Response(json.dumps(data))
+        except Exception as e:
+            return Response( json.dumps({'errors': str(e)}) )'''
+    
     
     @view_config(route_name='pycicu-upload', renderer='pycicu:templates/teste.pt')#, request_method='POST')
     def upload(self):
@@ -71,19 +83,19 @@ class ImageViews(object):
             filename = '%s.%s' % (uuid.uuid4(), format)
             
             path = self.store_file(input_file, filename)
-            
+            rel_path = self.IMAGES_URL+'/'+filename
 
-            img = UploadedFile()
-            img.file = filename
-            DBSession.merge(img)
+            image = UploadedFile()
+            image.file = path
+            DBSession.add(image)
             DBSession.flush()
 
             img = Image.open(path, mode='r')
             # get the image's width and height in pixels
             width, height = img.size
             data = {
-                'path': path,
-                'id' : img.uid,
+                'path': rel_path,
+                'id' : str(image.uid),
                 'width' : width,
                 'height' : height,
             }
@@ -93,70 +105,46 @@ class ImageViews(object):
             appstruct = {}#record.to_appstruct()
             ret = {'form' : form.render(appstruct=appstruct), 
                    'requirements' : form.get_widget_resources(),}
+            return ret
             
-            
-            #raise Exception()
-            '''form = UploadedFileForm(data=request.POST, files=request.FILES)
-            if form.is_valid():
-                uploaded_file = form.save()
-                # pick an image file you have in the working directory
-                # (or give full path name)
-                img = Image.open(uploaded_file.file.path, mode='r')
-                # get the image's width and height in pixels
-                width, height = img.size
-                data = {
-                    'path': uploaded_file.file.url,
-                    'id' : uploaded_file.id,
-                    'width' : width,
-                    'height' : height,
-                }
-                return HttpResponse(json.dumps(data))
-            else:
-                return HttpResponseBadRequest(json.dumps({'errors': form.errors}))
-        
-            f = StringIO()
-            pdf = pisa.CreatePDF(result, f)
-            response = Response(body=f.getvalue(), content_type="application/pdf",
-                    content_disposition='attachment; filename="NovaPesquisa.pdf"')'''
-            return ret#Response(body='upload')
-    
-    @view_config(route_name='pycicu-crop')
+    @view_config(route_name='pycicu-crop', renderer='pycicu:templates/teste.pt')
     def crop(self):
-        '''try:
-            if request.method == 'POST':
-                box = request.POST.get('cropping', None)
-                imageId = request.POST.get('id', None)
-                uploaded_file = UploadedFile.objects.get(id=imageId)
-                img = Image.open( uploaded_file.file.path, mode='r' )
-                values = [int(x) for x in box.split(',')]
+        original_id = self.request.POST.get('id', None)
+        original_file = DBSession.query(UploadedFile).get(original_id)
+        original_img = Image.open( original_file.file, mode='r' )
+        
+        #gets the coordinates of the area that will be cropped
+        box = self.request.POST.get('cropping', None)
+        values = [int(float(x)) for x in box.split(',')]
+        
+        #do the cropping
+        width = abs(values[2] - values[0])
+        height = abs(values[3] - values[1])
+        if width and height and (width != original_img.size[0] or height != original_img.size[1]):
+            croppedImage = original_img.crop(values).resize((width, height), Image.ANTIALIAS)
+        else:
+            raise 
+        
+        
+        pathToFile = self.USERFILES
+        if not path.exists(pathToFile):
+            makedirs(pathToFile)
+        pathToFile = path.join(pathToFile, original_file.file.split(sep)[-1])
+        croppedImage.save(pathToFile)
+        
+        new_file = UploadedFile()
+        new_file.file = pathToFile
+        new_file.original_id = original_id
+        DBSession.add(new_file)
+        DBSession.flush()
+
+        data = {
+            'path': new_file.file.url,
+            'id' : str(new_file.uid),
+        }
+
+        return Response(json.dumps(data))
     
-                width = abs(values[2] - values[0])
-                height = abs(values[3] - values[1])
-                if width and height and (width != img.size[0] or height != img.size[1]):
-                    croppedImage = img.crop(values).resize((width,height),Image.ANTIALIAS)
-    
-                else:
-                    raise
-    
-                pathToFile = path.join(settings.MEDIA_ROOT,IMAGE_CROPPED_UPLOAD_TO)
-                if not path.exists(pathToFile):
-                    makedirs(pathToFile)
-                pathToFile = path.join(pathToFile,uploaded_file.file.path.split(sep)[-1])
-                croppedImage.save(pathToFile)
-    
-                new_file = UploadedFile()
-                f = open(pathToFile, mode='rb')
-                new_file.file.save(uploaded_file.file.name, File(f))
-                f.close()
-    
-                data = {
-                    'path': new_file.file.url,
-                    'id' : new_file.id,
-                }
-    
-                return HttpResponse(json.dumps(data))
-    
-        except Exception:
-            return HttpResponseBadRequest(json.dumps({'errors': 'illegal request'}))'''
-        return Response(body='crop')
+        #except Exception as e:
+        #    return Response(json.dumps({'errors': str(e)}))
 
