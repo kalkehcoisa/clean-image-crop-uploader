@@ -37,7 +37,7 @@ class ImageViews(object):
         output_file.close()
         return f_location
     
-    '''@view_config(route_name='pycicu-upload', request_method='POST')
+    @view_config(route_name='pycicu-upload', request_method='POST')
     def upload(self):
         try:
             post = self.request.POST
@@ -65,11 +65,11 @@ class ImageViews(object):
             }
             return Response(json.dumps(data))
         except Exception as e:
-            return Response( json.dumps({'errors': str(e)}) )'''
+            return Response( json.dumps({'errors': str(e)}) )
     
     
     @view_config(route_name='pycicu-upload', renderer='pycicu:templates/teste.pt')#, request_method='POST')
-    def upload(self):
+    def teste_upload(self):
         schema = receiveUpload(request=self.request,)\
                                .bind(request=self.request,
                                      upload=self.request)
@@ -120,16 +120,17 @@ class ImageViews(object):
         #do the cropping
         width = abs(values[2] - values[0])
         height = abs(values[3] - values[1])
-        if width and height and (width != original_img.size[0] or height != original_img.size[1]):
+        if width and height and (width <= original_img.size[0] and height <= original_img.size[1]):
             croppedImage = original_img.crop(values).resize((width, height), Image.ANTIALIAS)
         else:
-            raise 
+            raise Exception( str(width)+' '+str(height) )
         
         
         pathToFile = self.USERFILES
+        filename = original_file.file.split(sep)[-1]
         if not path.exists(pathToFile):
             makedirs(pathToFile)
-        pathToFile = path.join(pathToFile, original_file.file.split(sep)[-1])
+        pathToFile = path.join(pathToFile, filename)
         croppedImage.save(pathToFile)
         
         new_file = UploadedFile()
@@ -139,12 +140,8 @@ class ImageViews(object):
         DBSession.flush()
 
         data = {
-            'path': new_file.file.url,
+            'path': str(self.IMAGES_URL+'/'+filename),
             'id' : str(new_file.uid),
         }
-
         return Response(json.dumps(data))
-    
-        #except Exception as e:
-        #    return Response(json.dumps({'errors': str(e)}))
 
