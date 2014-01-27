@@ -3,6 +3,8 @@
 from datetime import datetime
 import uuid
 
+import pyramid
+
 from sqlalchemy.ext.declarative import declarative_base
 
 from sqlalchemy.orm import (
@@ -70,7 +72,14 @@ class UploadedFile(Base):
 
     def __unicode__(self):
         return unicode(self.file)
-
+    
+    @property
+    def url(self):
+        filename = self.file.rsplit('/', 1)[-1]
+        file_url = '/userfiles/pycicu/'+str(filename)
+        return file_url
+        
+    
     '''def delete(self, *args, **kwargs):
         super(UploadedFile, self).delete(*args, **kwargs)
         if self.file:
