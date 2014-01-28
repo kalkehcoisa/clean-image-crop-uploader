@@ -127,6 +127,7 @@ class ImageViews(object):
         
         
         new_file = UploadedFile()
+        new_file.uid = uuid.uuid4()
         new_file.original_id = original_id
         DBSession.add(new_file)
         DBSession.flush()

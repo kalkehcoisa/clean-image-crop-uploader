@@ -12,6 +12,7 @@ setup(name = "pycicu",
     author = "kalkehcoisa",
     author_email = "kalkehcoisa@gmail.com",
     url = "",
+    keywords='web pylons pyramid upload image crop',
     packages = find_packages(),
     include_package_data=True,
     install_requires = [
