@@ -62,10 +62,12 @@ class UUID(types.TypeDecorator):
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 Base = declarative_base()
 
+from familia.models import DBSession, Base
+
 class UploadedFile(Base):
     __tablename__ = 'pycicu_uploaded_file'
 
-    uid = Column(UUID, primary_key = True, default=uuid.uuid4)
+    uid = Column(UUID, primary_key = True, default=uuid.uuid4())
     file = Column(String, nullable=True)
     original_id = Column(UUID, ForeignKey('pycicu_uploaded_file.uid'), nullable=True)
     creation_date = Column(DateTime, default=datetime.now())

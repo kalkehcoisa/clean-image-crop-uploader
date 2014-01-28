@@ -16,9 +16,16 @@ def routes(config):
 def includeme(config):
     settings = config.registry.settings
     
+    #global DBSession
+    #global Base
+    
+    #if 'DBSession' not in settings:
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine
+    #else:
+    #    DBSession = settings['DBSession']
+    #    Base = settings['Base']
     
     config.include(routes, route_prefix='/pycicu/')
     config.scan()
