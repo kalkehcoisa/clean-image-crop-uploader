@@ -5,7 +5,7 @@ __author__ = 'Jayme Tosi Neto'
 from setuptools import setup, find_packages
 
 setup(name = "pycicu",
-    version = "0.1.5.4",
+    version = "0.1.5.5",
     description = u"PyClean Image Crop Uploader (pycicu) provides AJAX file upload and image CROP functionalities" 
                   u"using Pyramid. It uses Modal from twitter-bootstrap. This is a fork of clean-image-crop-uploader.",
     long_description=open('README.rst').read(),
@@ -31,5 +31,10 @@ setup(name = "pycicu",
         'Programming Language :: Python',
         'Topic :: Software Development :: Libraries :: Python Modules',
         ],
+    entry_points="""\
+    [paste.app_factory]
+    main = pycicu:main
+    [console_scripts]
+    initialize_pycicu_db = pycicu.scripts.initializedb:main""",
     zip_safe = False,
 )
