@@ -62,8 +62,6 @@ class UUID(types.TypeDecorator):
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 Base = declarative_base()
 
-from familia.models import DBSession, Base
-
 class UploadedFile(Base):
     __tablename__ = 'pycicu_uploaded_file'
 
