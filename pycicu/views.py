@@ -87,6 +87,7 @@ class ImageViews(object):
             rel_path = self.IMAGES_URL+'/'+filename
 
             image = UploadedFile()
+            image.uid = uuid.uuid4()
             image.file = path
             DBSession.add(image)
             DBSession.flush()
