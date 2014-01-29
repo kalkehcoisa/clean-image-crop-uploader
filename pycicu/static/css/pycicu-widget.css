@@ -17,9 +17,11 @@
     margin-top: 5px;
 }
 
-.cropped-imag-preview{
+.cropped-imag-preview
+{
     position: relative;
     min-height: 50px;
+    max-height: 200px;
 }
 
 .upload-btn{
